@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.databinding.TodoItemBinding
 
-class TodoAdapter(var datalist:MutableList<String>):RecyclerView.Adapter<ViewHolder>() {
+class TodoAdapter():RecyclerView.Adapter<ViewHolder>() {
+
+    private var datalist = TodoDataClass.todolist
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = TodoItemBinding
@@ -21,21 +23,20 @@ class TodoAdapter(var datalist:MutableList<String>):RecyclerView.Adapter<ViewHol
     override fun getItemCount(): Int {
         return datalist.size
     }
+    fun getAdapter() :RecyclerView.Adapter<ViewHolder> {
+        return this
+    }
 
 }
 
 class ViewHolder(private val binding: TodoItemBinding,var adapter: TodoAdapter) : RecyclerView.ViewHolder(binding.root) {
 
-
     fun bind(get: String) {
         binding.todo.text = get
         binding.deleteButton.setOnClickListener(View.OnClickListener() {
-            println("TTTT")
             var position = adapterPosition
-            println(this)
-            println(adapter)
             if(position != RecyclerView.NO_POSITION){
-                adapter.datalist.removeAt(position)
+                TodoDataClass.removeItem(position)
                 adapter.notifyItemRemoved(position)
             }
         })
